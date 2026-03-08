@@ -76,7 +76,6 @@ exclude_lines = [
 
 # UV-specific settings
 [tool.uv]
-dev-dependencies = []
 
 # Documentation that this follows Germaneering principles
 [tool.germaneering]
