@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "haversine-cli"
+version = "1.0.0"
+authors = [
+    {name = "Germaneering Lab", email = "contacts@germaneering.org"},
+]
+description = "A minimal CLI calculator for great-circle distances using the haversine formula"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research", 
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["haversine", "distance", "geography", "cli", "education", "germaneering", "deep-code"]
+
+# No runtime dependencies - Python standard library only
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    # Development tools (Python standard library compatible)
+]
+
+[project.urls] 
+"Homepage" = "https://germaneering.org"
+"Repository" = "https://github.com/germaneering/germaneering-lab"
+"Bug Tracker" = "https://github.com/germaneering/germaneering-lab/issues"
+"Documentation" = "https://germaneering.org/explorations/haversine-cli"
+
+[project.scripts]
+haversine = "haversine.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["haversine*"]
+
+[tool.setuptools.package-data]
+haversine = ["*.md"]
+
+# Testing configuration  
+[tool.coverage.run]
+source = ["haversine"]
+omit = ["tests/*", "**/__main__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+# UV-specific settings
+[tool.uv]
+
+# Documentation that this follows Germaneering principles
+[tool.germaneering]
+pillar = "deep-code"
+principle = "awareness-beneath-abstraction"
+educational-value = "demonstrates mathematical implementation from primitives"
+zero-dependencies = true
