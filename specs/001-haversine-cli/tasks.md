@@ -17,71 +17,71 @@
 
 **Purpose**: Project initialization and basic structure that supports all user stories
 
-- [ ] T001 Create project directory structure with haversine/ and tests/ folders
-- [ ] T002 [P] Create haversine/__init__.py package marker file  
-- [ ] T003 [P] Create tests/__init__.py test package marker file
-- [ ] T004 Create pyproject.toml with uv configuration and Python 3.8+ requirement
-- [ ] T005 [P] Create basic README.md with installation and usage instructions
+- [X] T001 Create project directory structure with haversine/ and tests/ folders
+- [X] T002 [P] Create haversine/__init__.py package marker file  
+- [X] T003 [P] Create tests/__init__.py test package marker file
+- [X] T004 Create pyproject.toml with uv configuration and Python 3.8+ requirement
+- [X] T005 [P] Create basic README.md with installation and usage instructions
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
 **Purpose**: Core mathematical and validation infrastructure needed by all user stories
 
-- [ ] T006 Implement GeographicPoint class in haversine/models.py with coordinate validation
-- [ ] T007 [P] Create test_models.py with GeographicPoint validation tests (latitude/longitude ranges)
-- [ ] T008 Implement haversine formula calculation in haversine/calculator.py 
-- [ ] T009 [P] Create test_calculator.py with accuracy tests using known coordinate pairs (NYC-LA, London-Paris)
+- [X] T006 Implement GeographicPoint class in haversine/models.py with coordinate validation
+- [X] T007 [P] Create test_models.py with GeographicPoint validation tests (latitude/longitude ranges)
+- [X] T008 Implement haversine formula calculation in haversine/calculator.py 
+- [X] T009 [P] Create test_calculator.py with accuracy tests using known coordinate pairs (NYC-LA, London-Paris)
 
 ## Phase 3: User Story 1 - Basic Distance Calculation (Priority P1)
 
 **Goal**: Core CLI functionality that calculates and outputs distance between two coordinate pairs
 **Independent Test**: Can be tested by running basic distance calculations and verifying against known values
 
-- [ ] T010 [US1] Create DistanceCalculation class in haversine/calculator.py with distance_km property
-- [ ] T011 [P] [US1] Add DistanceCalculation tests in test_calculator.py for basic distance calculations
-- [ ] T012 [US1] Implement basic command-line argument parsing in haversine/cli.py for four coordinate arguments
-- [ ] T013 [US1] Create __main__.py entry point for `python -m haversine` and `uv run` execution
-- [ ] T014 [US1] Implement basic distance output formatting (number + "km") in haversine/cli.py
-- [ ] T015 [P] [US1] Create test_cli.py with integration tests for basic CLI distance calculation
+- [X] T010 [US1] Create DistanceCalculation class in haversine/calculator.py with distance_km property
+- [X] T011 [P] [US1] Add DistanceCalculation tests in test_calculator.py for basic distance calculations
+- [X] T012 [US1] Implement basic command-line argument parsing in haversine/cli.py for four coordinate arguments
+- [X] T013 [US1] Create __main__.py entry point for `python -m haversine` and `uv run` execution
+- [X] T014 [US1] Implement basic distance output formatting (number + "km") in haversine/cli.py
+- [X] T015 [P] [US1] Create test_cli.py with integration tests for basic CLI distance calculation
 
 ## Phase 4: User Story 2 - Input Validation and Error Handling (Priority P2)
 
 **Goal**: Robust CLI experience with clear error messages for invalid inputs  
 **Independent Test**: Can be tested with various invalid inputs without requiring working calculations
 
-- [ ] T016 [US2] Create input validator module in haversine/validator.py with coordinate range checking
-- [ ] T017 [P] [US2] Add comprehensive validation tests in test_validator.py for all edge cases
-- [ ] T018 [US2] Integrate validator into CLI argument parsing in haversine/cli.py
-- [ ] T019 [US2] Implement structured error messages with examples in haversine/cli.py
-- [ ] T020 [US2] Add proper exit code handling (0=success, 1=user error) in haversine/cli.py
-- [ ] T021 [P] [US2] Add CLI error handling tests in test_cli.py for invalid inputs and exit codes
-- [ ] T022 [US2] Implement help and usage display functionality in haversine/cli.py
+- [X] T016 [US2] Create input validator module in haversine/validator.py with coordinate range checking
+- [X] T017 [P] [US2] Add comprehensive validation tests in test_validator.py for all edge cases
+- [X] T018 [US2] Integrate validator into CLI argument parsing in haversine/cli.py
+- [X] T019 [US2] Implement structured error messages with examples in haversine/cli.py
+- [X] T020 [US2] Add proper exit code handling (0=success, 1=user error) in haversine/cli.py
+- [X] T021 [P] [US2] Add CLI error handling tests in test_cli.py for invalid inputs and exit codes
+- [X] T022 [US2] Implement help and usage display functionality in haversine/cli.py
 
 ## Phase 5: User Story 3 - Output Formatting Options (Priority P3)
 
 **Goal**: Enhanced usability with multiple units and precision control
 **Independent Test**: Can be tested with format flags without changing core calculation logic
 
-- [ ] T023 [US3] Add distance_miles and distance_nautical properties to DistanceCalculation class
-- [ ] T024 [P] [US3] Add unit conversion tests in test_calculator.py for miles and nautical miles
-- [ ] T025 [US3] Implement --unit argument parsing in haversine/cli.py (km/miles/nautical)
-- [ ] T026 [P] [US3] Implement --precision argument parsing in haversine/cli.py (0-6 decimal places)
-- [ ] T027 [US3] Add output formatting logic for different units and precision in haversine/cli.py
-- [ ] T028 [P] [US3] Create output formatting tests in test_cli.py for all unit combinations
-- [ ] T029 [US3] Add --version flag support in haversine/cli.py
+- [X] T023 [US3] Add distance_miles and distance_nautical properties to DistanceCalculation class
+- [X] T024 [P] [US3] Add unit conversion tests in test_calculator.py for miles and nautical miles
+- [X] T025 [US3] Implement --unit argument parsing in haversine/cli.py (km/miles/nautical)
+- [X] T026 [P] [US3] Implement --precision argument parsing in haversine/cli.py (0-6 decimal places)
+- [X] T027 [US3] Add output formatting logic for different units and precision in haversine/cli.py
+- [X] T028 [P] [US3] Create output formatting tests in test_cli.py for all unit combinations
+- [X] T029 [US3] Add --version flag support in haversine/cli.py
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 **Purpose**: Final integration, documentation, and quality assurance
 
-- [ ] T030 [P] Add comprehensive docstrings to all modules following Deep Code principles
-- [ ] T031 [P] Add inline mathematical comments explaining haversine formula implementation
-- [ ] T032 Create comprehensive integration tests covering all user scenarios in test_cli.py
-- [ ] T033 [P] Add edge case tests for poles, date line, and identical coordinates
-- [ ] T034 [P] Update README.md with complete usage examples and Germaneering doctrine connection
-- [ ] T035 Verify all tests pass via `uv run -m unittest discover tests`
-- [ ] T036 [P] Add performance validation test ensuring <1 second execution time
-- [ ] T037 [P] Create example usage scenarios in README.md demonstrating educational value
+- [X] T030 [P] Add comprehensive docstrings to all modules following Deep Code principles
+- [X] T031 [P] Add inline mathematical comments explaining haversine formula implementation
+- [X] T032 Create comprehensive integration tests covering all user scenarios in test_cli.py
+- [X] T033 [P] Add edge case tests for poles, date line, and identical coordinates
+- [X] T034 [P] Update README.md with complete usage examples and Germaneering doctrine connection
+- [X] T035 Verify all tests pass via `uv run -m unittest discover tests`
+- [X] T036 [P] Add performance validation test ensuring <1 second execution time
+- [X] T037 [P] Create example usage scenarios in README.md demonstrating educational value
 
 ## Dependencies
 
