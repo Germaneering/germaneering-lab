@@ -6,10 +6,6 @@ This repository contains runnable examples, patterns, and specifications that ac
 
 Each subdirectory in `/explorations` corresponds to an essay on the website, with code that demonstrates the concepts in practice.
 
-- [Anatomy of an Agent Failure](./explorations/anatomy-of-failure) – A case study in Deep and Foundational Code.
-- [Encoding Intent](./explorations/encoding-intent) – Building a policy-driven agent with explicit governance.
-- [From Void to Pattern](./explorations/from-void-to-pattern) – The evolution of a workflow DSL for agents.
-
 ## License
 
 Code is licensed under the Apache V2 License. See [LICENSE](./LICENSE). The associated essays remain on the Germaneering website and are not part of this repository.
