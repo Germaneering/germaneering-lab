@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "haversine-cli"
 version = "1.0.0"
 authors = [
-    {name = "Germaneering Lab", email = "hello@germaneering.org"},
+    {name = "Germaneering Lab", email = "contacts@germaneering.org"},
 ]
 description = "A minimal CLI calculator for great-circle distances using the haversine formula"
 readme = "README.md"
