@@ -7,19 +7,18 @@
 ## Core Entities
 
 ### ServiceConfig
-**Purpose**: Represents the resolved runtime configuration required to call the geosearoute service.
+**Purpose**: Represents the runtime configuration required to call the fixed geosearoute RapidAPI endpoint.
 
 **Attributes**:
-- `base_url: str` - Absolute HTTP or HTTPS base URL for the target service
-- `api_key: str` - Non-empty credential value used to authorize requests
-- `base_url_source: str` - Indicates whether the resolved base URL came from environment or CLI override
-- `api_key_source: str` - Indicates whether the resolved API key came from environment or CLI override
+- `base_url: str` - Fixed HTTPS base URL for the target service
+- `rapidapi_host: str` - Non-empty header value for `x-rapidapi-host`
+- `rapidapi_key: str` - Non-empty header value for `x-rapidapi-key`
 
 **Validation Rules**:
-- `base_url` MUST be a non-empty absolute URL using `http` or `https`
-- `api_key` MUST be present and MUST NOT be blank after trimming whitespace
-- CLI-provided values override environment-provided values
-- Missing or invalid configuration MUST prevent any outbound request
+- `base_url` MUST equal `https://geosearoute.p.rapidapi.com`
+- `rapidapi_host` MUST be present in environment variable `x_rapidapi_host` and MUST NOT be blank after trimming whitespace
+- `rapidapi_key` MUST be present in environment variable `x_rapidapi_key` and MUST NOT be blank after trimming whitespace
+- Missing or invalid header configuration MUST prevent any outbound request
 
 ### NearestQuery
 **Purpose**: Encapsulates the validated input for the `nearest` command.
@@ -73,7 +72,7 @@
 - `path: str` - Service path (`/nearest` or `/solve`)
 - `query_params: dict[str, str | float]` - URL query parameters
 - `json_body: dict | None` - JSON request body when required
-- `headers: dict[str, str]` - Headers including API key transport details
+- `headers: dict[str, str]` - Headers including `x-rapidapi-host` and `x-rapidapi-key`
 
 **Validation Rules**:
 - `method` MUST match the target operation contract
@@ -109,7 +108,7 @@ ServiceRequest -> ServiceResponse
 ## State Flow
 
 1. CLI arguments are parsed into raw command values.
-2. Configuration sources are resolved into a `ServiceConfig`.
+2. RapidAPI environment variables are resolved into a `ServiceConfig` with the fixed base URL.
 3. Command inputs are validated into either `NearestQuery` or `SolveQuery`.
 4. A normalized `ServiceRequest` is assembled from config plus command entity.
 5. The HTTP client executes the request and converts the result into a `ServiceResponse`.
@@ -117,14 +116,14 @@ ServiceRequest -> ServiceResponse
 
 ## Data Validation Strategy
 
-**Configuration Level**: Verify base URL presence/shape and API key presence before command execution.  
+**Configuration Level**: Verify presence of `x_rapidapi_host` and `x_rapidapi_key` before command execution while keeping the base URL fixed.  
 **Command Level**: Validate coordinate ranges, positive numeric inputs, and minimum stop count before network I/O.  
 **Serialization Level**: Ensure `solve` request bodies preserve stop order as `[[lon, lat], ...]`.  
 **Response Level**: Parse JSON when possible and gracefully fall back to response text when parsing fails.
 
 ## Error Handling
 
-**Configuration Errors**: Missing or invalid base URL/API key prevent request execution and return a user-facing stderr message.  
+**Configuration Errors**: Missing or invalid RapidAPI header values prevent request execution and return a user-facing stderr message.  
 **Input Errors**: Invalid coordinates, negative distance/speed, or fewer than two stops return a validation error before HTTP execution.  
 **Transport Errors**: Connection failures, timeouts, or DNS issues are classified as transport failures and surfaced clearly.  
 **Remote Errors**: Non-success HTTP responses surface status plus any structured JSON error body or raw response text.  
