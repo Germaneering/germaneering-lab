@@ -1,9 +1,15 @@
 # Feature Specification: Sea Route Service Tester CLI
 
-**Feature Branch**: `002-searoute-tester`  
+**Feature Branch**: `002-geosearoute-cli`  
 **Created**: 2026-04-15  
 **Status**: Draft  
-**Input**: User description: "We want to create a simple python based cli app testing our geosearoute service API. Build a Python CLI tool called \"searoute-tester\" that tests the service. It must support two commands: \"nearest\" (GET /nearest?lat=&lon=&distance=, default distance 500 km) and \"solve\" (POST /solve?speed=, default speed 24 knots, JSON body {\"stops\":[[lon,lat],...]}). Pretty-print JSON responses. Handle errors and missing key. Use argparse, requests, standard libs only. Provide --help."
+**Input**: User description: "We want to create a simple python based cli app testing our geosearoute service API. Build a Python CLI tool called \"geosearoute-cli\" that tests the service. It must support two commands: \"nearest\" (GET /nearest?lat=&lon=&distance=, default distance 500 km) and \"solve\" (POST /solve?speed=, default speed 24 knots, JSON body {\"stops\":[[lon,lat],...]}). Pretty-print JSON responses. Handle errors and missing key. Use argparse, requests, standard libs only. Provide --help."
+
+## Clarifications
+
+### Session 2026-04-15
+
+- Q: What should the CLI entry point and aligned feature branch name be? → A: Use `geosearoute-cli` as the command-line entry point and align the feature branch name with it.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -65,7 +71,7 @@ A service operator needs immediate, actionable feedback when required credential
 
 ### Functional Requirements
 
-- **FR-001**: System MUST provide a command-line entry point named `searoute-tester`
+- **FR-001**: System MUST provide a command-line entry point named `geosearoute-cli`
 - **FR-002**: System MUST provide a `nearest` command that accepts latitude and longitude as required inputs
 - **FR-003**: System MUST allow the `nearest` command to accept an optional search distance and MUST use a default value of 500 kilometers when no distance is provided
 - **FR-004**: System MUST send the `nearest` request to the sea-route service as a nearest-point lookup using the supplied coordinates and distance
