@@ -164,3 +164,127 @@ class TestGeographicPoint(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+from geosearoute_cli.models import (
+    ServiceConfig,
+    NearestQuery,
+    StopCoordinate,
+    SolveQuery,
+    ServiceRequest,
+    ServiceResponse,
+)
+
+
+class TestServiceConfig(unittest.TestCase):
+    """Test geosearoute service configuration behavior."""
+
+    def test_valid_service_config(self):
+        config = ServiceConfig(
+            base_url="https://geosearoute.p.rapidapi.com",
+            rapidapi_host="geosearoute.p.rapidapi.com",
+            rapidapi_key="secret-key",
+        )
+
+        self.assertEqual(config.base_url, "https://geosearoute.p.rapidapi.com")
+        self.assertEqual(config.rapidapi_host, "geosearoute.p.rapidapi.com")
+        self.assertEqual(config.rapidapi_key, "secret-key")
+
+    def test_invalid_base_url(self):
+        with self.assertRaises(ValueError):
+            ServiceConfig(
+                base_url="https://example.com",
+                rapidapi_host="geosearoute.p.rapidapi.com",
+                rapidapi_key="secret-key",
+            )
+
+    def test_blank_header_values(self):
+        with self.assertRaises(ValueError):
+            ServiceConfig(
+                base_url="https://geosearoute.p.rapidapi.com",
+                rapidapi_host="",
+                rapidapi_key="secret-key",
+            )
+
+        with self.assertRaises(ValueError):
+            ServiceConfig(
+                base_url="https://geosearoute.p.rapidapi.com",
+                rapidapi_host="geosearoute.p.rapidapi.com",
+                rapidapi_key=" ",
+            )
+
+
+class TestNearestQuery(unittest.TestCase):
+    """Test nearest query defaults and validation."""
+
+    def test_defaults_and_values(self):
+        query = NearestQuery(latitude=57.7089, longitude=11.9746)
+
+        self.assertEqual(query.latitude, 57.7089)
+        self.assertEqual(query.longitude, 11.9746)
+        self.assertEqual(query.distance_km, 500.0)
+
+    def test_invalid_ranges_and_distance(self):
+        with self.assertRaises(ValueError):
+            NearestQuery(latitude=91.0, longitude=11.9746)
+
+        with self.assertRaises(ValueError):
+            NearestQuery(latitude=57.7089, longitude=181.0)
+
+        with self.assertRaises(ValueError):
+            NearestQuery(latitude=57.7089, longitude=11.9746, distance_km=0)
+
+
+class TestSolveQuery(unittest.TestCase):
+    """Test solve query validation and ordering."""
+
+    def test_requires_two_stops(self):
+        stop = StopCoordinate(longitude=11.9746, latitude=57.7089, index=0)
+
+        with self.assertRaises(ValueError):
+            SolveQuery(stops=(stop,), speed_knots=24.0)
+
+    def test_preserves_stop_order(self):
+        stop1 = StopCoordinate(longitude=11.9746, latitude=57.7089, index=0)
+        stop2 = StopCoordinate(longitude=4.47917, latitude=51.9225, index=1)
+        query = SolveQuery(stops=(stop1, stop2), speed_knots=24.0)
+
+        self.assertEqual(query.stops[0], stop1)
+        self.assertEqual(query.stops[1], stop2)
+        self.assertEqual(query.speed_knots, 24.0)
+
+    def test_invalid_speed(self):
+        stop1 = StopCoordinate(longitude=11.9746, latitude=57.7089, index=0)
+        stop2 = StopCoordinate(longitude=4.47917, latitude=51.9225, index=1)
+
+        with self.assertRaises(ValueError):
+            SolveQuery(stops=(stop1, stop2), speed_knots=-1.0)
+
+
+class TestServiceRequestResponse(unittest.TestCase):
+    """Test normalized request and response models."""
+
+    def test_service_request_fields(self):
+        request = ServiceRequest(
+            method="GET",
+            path="/nearest",
+            query_params={"lat": 57.7, "lon": 11.9, "distance": 500.0},
+            json_body=None,
+            headers={"x-rapidapi-host": "geosearoute.p.rapidapi.com"},
+        )
+
+        self.assertEqual(request.method, "GET")
+        self.assertEqual(request.path, "/nearest")
+        self.assertIsNone(request.json_body)
+
+    def test_service_response_fields(self):
+        response = ServiceResponse(
+            status_code=200,
+            payload={"ok": True},
+            raw_text=None,
+            is_success=True,
+            error_category=None,
+        )
+
+        self.assertTrue(response.is_success)
+        self.assertEqual(response.payload["ok"], True)

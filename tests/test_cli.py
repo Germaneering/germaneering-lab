@@ -411,3 +411,94 @@ class TestCLIIntegration(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+from unittest import mock
+from geosearoute_cli.cli import create_argument_parser as create_geosearoute_parser, main as geosearoute_main
+from geosearoute_cli.models import ServiceResponse
+
+
+class TestGeoSeaRouteArgumentParser(unittest.TestCase):
+    """Test geosearoute CLI parser behavior."""
+
+    def setUp(self):
+        self.parser = create_geosearoute_parser()
+
+    def test_nearest_defaults(self):
+        args = self.parser.parse_args(["nearest", "57.7089", "11.9746"])
+
+        self.assertEqual(args.command, "nearest")
+        self.assertEqual(args.distance, 500.0)
+
+    def test_solve_defaults_and_ordered_stops(self):
+        args = self.parser.parse_args(
+            ["solve", "--stop", "11.9746", "57.7089", "--stop", "4.47917", "51.9225"]
+        )
+
+        self.assertEqual(args.command, "solve")
+        self.assertEqual(args.speed, 24.0)
+        self.assertEqual(args.stop, [["11.9746", "57.7089"], ["4.47917", "51.9225"]])
+
+    def test_help_returns_zero(self):
+        exit_code = geosearoute_main(["--help"])
+        self.assertEqual(exit_code, 0)
+
+
+class TestGeoSeaRouteCLIExecution(unittest.TestCase):
+    """Test geosearoute CLI command execution."""
+
+    @mock.patch.dict(
+        "os.environ",
+        {"x_rapidapi_host": "geosearoute.p.rapidapi.com", "x_rapidapi_key": "secret-key"},
+        clear=True,
+    )
+    @mock.patch("geosearoute_cli.cli.GeoSeaRouteClient")
+    def test_nearest_command_outputs_pretty_json(self, client_class):
+        client_class.return_value.nearest.return_value = ServiceResponse(
+            status_code=200,
+            payload={"point": {"lat": 57.701, "lon": 11.902}},
+            raw_text=None,
+            is_success=True,
+            error_category=None,
+        )
+
+        stdout = io.StringIO()
+        with redirect_stdout(stdout):
+            exit_code = geosearoute_main(["nearest", "57.7089", "11.9746"])
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn('"point"', stdout.getvalue())
+
+    @mock.patch.dict("os.environ", {}, clear=True)
+    def test_missing_environment_configuration_returns_one(self):
+        stderr = io.StringIO()
+        with redirect_stderr(stderr):
+            exit_code = geosearoute_main(["nearest", "57.7089", "11.9746"])
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn("x_rapidapi_host", stderr.getvalue())
+        self.assertIn("x_rapidapi_key", stderr.getvalue())
+
+    @mock.patch.dict(
+        "os.environ",
+        {"x_rapidapi_host": "geosearoute.p.rapidapi.com", "x_rapidapi_key": "secret-key"},
+        clear=True,
+    )
+    @mock.patch("geosearoute_cli.cli.GeoSeaRouteClient")
+    def test_remote_error_returns_two(self, client_class):
+        client_class.return_value.solve.return_value = ServiceResponse(
+            status_code=401,
+            payload={"error": "invalid api key"},
+            raw_text=None,
+            is_success=False,
+            error_category="remote",
+        )
+
+        stderr = io.StringIO()
+        with redirect_stderr(stderr):
+            exit_code = geosearoute_main(
+                ["solve", "--stop", "11.9746", "57.7089", "--stop", "4.47917", "51.9225"]
+            )
+
+        self.assertEqual(exit_code, 2)
+        self.assertIn("401", stderr.getvalue())

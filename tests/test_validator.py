@@ -252,3 +252,74 @@ class TestValidationExamples(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+from geosearoute_cli.models import StopCoordinate
+from geosearoute_cli.validator import (
+    ValidationError,
+    ConfigurationError,
+    resolve_service_config,
+    validate_latitude,
+    validate_longitude,
+    validate_positive_number,
+    parse_stop_pairs,
+)
+
+
+class TestGeoSeaRouteValidation(unittest.TestCase):
+    """Test geosearoute validation helpers."""
+
+    def test_validate_latitude_and_longitude(self):
+        self.assertEqual(validate_latitude(57.7089), 57.7089)
+        self.assertEqual(validate_longitude(11.9746), 11.9746)
+
+        with self.assertRaises(ValidationError):
+            validate_latitude(95.0)
+
+        with self.assertRaises(ValidationError):
+            validate_longitude(-181.0)
+
+    def test_validate_positive_number(self):
+        self.assertEqual(validate_positive_number("distance", 500), 500.0)
+
+        with self.assertRaises(ValidationError):
+            validate_positive_number("distance", 0)
+
+        with self.assertRaises(ValidationError):
+            validate_positive_number("speed", -1)
+
+    def test_resolve_service_config(self):
+        config = resolve_service_config(
+            {
+                "x_rapidapi_host": "geosearoute.p.rapidapi.com",
+                "x_rapidapi_key": "secret-key",
+            }
+        )
+
+        self.assertEqual(config.base_url, "https://geosearoute.p.rapidapi.com")
+        self.assertEqual(config.rapidapi_host, "geosearoute.p.rapidapi.com")
+        self.assertEqual(config.rapidapi_key, "secret-key")
+
+    def test_resolve_service_config_requires_both_variables(self):
+        with self.assertRaises(ConfigurationError) as context:
+            resolve_service_config({"x_rapidapi_host": "geosearoute.p.rapidapi.com"})
+
+        message = str(context.exception)
+        self.assertIn("x_rapidapi_key", message)
+
+        with self.assertRaises(ConfigurationError) as context:
+            resolve_service_config({"x_rapidapi_key": "secret-key"})
+
+        self.assertIn("x_rapidapi_host", str(context.exception))
+
+    def test_parse_stop_pairs(self):
+        stops = parse_stop_pairs([["11.9746", "57.7089"], ["4.47917", "51.9225"]])
+
+        self.assertEqual(len(stops), 2)
+        self.assertIsInstance(stops[0], StopCoordinate)
+        self.assertEqual(stops[0].index, 0)
+        self.assertEqual(stops[1].index, 1)
+
+    def test_parse_stop_pairs_rejects_invalid_stop(self):
+        with self.assertRaises(ValidationError):
+            parse_stop_pairs([["11.9746", "57.7089"], ["4.47917"]])
