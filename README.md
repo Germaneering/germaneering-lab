@@ -111,6 +111,75 @@ tests/
 
 See [haversine specification](specs/001-haversine-cli/spec.md) and [quickstart guide](specs/001-haversine-cli/quickstart.md) for complete documentation.
 
+### GeoSeaRoute Service Tester (`geosearoute_cli/`)
+
+A focused command-line tester for the geosearoute RapidAPI service. This exploration demonstrates a different aspect of Germaneering: a small, explicit client that keeps request construction, validation, configuration, and error handling visible instead of delegating them to a heavy framework.
+
+**Quick Start:**
+```bash
+# Prepare the environment
+uv sync
+
+# Configure the RapidAPI headers used by every request
+export x_rapidapi_host="geosearoute.p.rapidapi.com"
+export x_rapidapi_key="your-rapidapi-key"
+
+# Run the nearest lookup
+uv run geosearoute-cli nearest 57.7089 11.9746
+```
+
+**Command Examples:**
+```bash
+# Default nearest lookup (distance defaults to 500 km)
+uv run geosearoute-cli nearest 57.7089 11.9746
+
+# Custom nearest lookup distance
+uv run geosearoute-cli nearest 57.7089 11.9746 --distance 750
+
+# Solve a route with the default 24-knot speed
+uv run geosearoute-cli solve \
+	--stop 11.9746 57.7089 \
+	--stop 4.47917 51.9225
+
+# Solve a route with additional stops and custom speed
+uv run geosearoute-cli solve \
+	--stop 11.9746 57.7089 \
+	--stop 4.47917 51.9225 \
+	--stop -5.9301 54.5973 \
+	--speed 20
+```
+
+**What This Exploration Demonstrates:**
+- **Minimal Dependencies**: Only `requests` beyond the Python standard library
+- **Explicit Integration Boundaries**: Fixed RapidAPI endpoint with visible `x-rapidapi-host` and `x-rapidapi-key` header construction
+- **Test-First Service Client Design**: Mocked HTTP tests for success paths, remote failures, transport failures, and malformed input
+- **Foundational Workflow Alignment**: `uv sync`, `uv run`, and `uv build` as the primary setup, execution, and packaging path
+
+**Architecture & Design:**
+
+```text
+geosearoute_cli/
+├── __init__.py         # Package metadata and exports
+├── __main__.py         # Entry point for script and module execution
+├── cli.py              # argparse subcommands, output, and exit handling
+├── client.py           # Fixed-endpoint RapidAPI request execution
+├── models.py           # Immutable request and response models
+└── validator.py        # Configuration and input validation helpers
+
+tests/
+├── test_cli.py         # Geosearoute and haversine CLI behavior
+├── test_client.py      # RapidAPI request and response normalization
+├── test_models.py      # Shared geosearoute model validation
+└── test_validator.py   # Shared validation and environment handling
+```
+
+**Features by User Story:**
+1. **Nearest Lookup**: Validate GET `/nearest` requests with default and custom distance values
+2. **Solve Route**: Validate POST `/solve` requests with ordered stops and optional speed
+3. **Operational Error Recovery**: Fail early on missing RapidAPI variables, malformed inputs, and service-side errors
+
+See [geosearoute specification](specs/002-geosearoute-cli/spec.md), [quickstart guide](specs/002-geosearoute-cli/quickstart.md), and [task list](specs/002-geosearoute-cli/tasks.md) for the full implementation details.
+
 ### Future Explorations
 
 Each subdirectory will correspond to essays on the website, with code that demonstrates the concepts in practice.

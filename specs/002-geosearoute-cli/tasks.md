@@ -11,9 +11,9 @@
 
 **Purpose**: Prepare packaging, source layout, and test layout for the new dedicated CLI package.
 
-- [ ] T001 Update packaging and `uv` metadata for `geosearoute-cli` in pyproject.toml
-- [ ] T002 Create package skeleton files in geosearoute_cli/__init__.py, geosearoute_cli/__main__.py, geosearoute_cli/cli.py, geosearoute_cli/client.py, geosearoute_cli/models.py, and geosearoute_cli/validator.py
-- [ ] T003 [P] Create test module skeletons in tests/test_cli.py, tests/test_client.py, tests/test_models.py, and tests/test_validator.py
+- [X] T001 Update packaging and `uv` metadata for `geosearoute-cli` in pyproject.toml
+- [X] T002 Create package skeleton files in geosearoute_cli/__init__.py, geosearoute_cli/__main__.py, geosearoute_cli/cli.py, geosearoute_cli/client.py, geosearoute_cli/models.py, and geosearoute_cli/validator.py
+- [X] T003 [P] Create test module skeletons in tests/test_cli.py, tests/test_client.py, tests/test_models.py, and tests/test_validator.py
 
 ---
 
@@ -23,12 +23,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T004 [P] Add failing model tests for shared service entities in tests/test_models.py
-- [ ] T005 [P] Add failing validation tests for RapidAPI environment handling and numeric guards in tests/test_validator.py
-- [ ] T006 Implement shared service entities in geosearoute_cli/models.py
-- [ ] T007 Implement shared configuration and numeric validation helpers in geosearoute_cli/validator.py
-- [ ] T008 [P] Add failing client tests for fixed RapidAPI endpoint, common headers, and response normalization in tests/test_client.py
-- [ ] T009 Implement fixed-endpoint RapidAPI client behavior in geosearoute_cli/client.py
+- [X] T004 [P] Add failing model tests for shared service entities in tests/test_models.py
+- [X] T005 [P] Add failing validation tests for RapidAPI environment handling and numeric guards in tests/test_validator.py
+- [X] T006 Implement shared service entities in geosearoute_cli/models.py
+- [X] T007 Implement shared configuration and numeric validation helpers in geosearoute_cli/validator.py
+- [X] T008 [P] Add failing client tests for fixed RapidAPI endpoint, common headers, and response normalization in tests/test_client.py
+- [X] T009 Implement fixed-endpoint RapidAPI client behavior in geosearoute_cli/client.py
 
 **Checkpoint**: Foundation ready; nearest and solve command work can now proceed.
 
@@ -44,15 +44,15 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Add failing nearest command parser and exit-behavior tests in tests/test_cli.py
-- [ ] T011 [P] [US1] Add failing nearest request/response tests in tests/test_client.py
+- [X] T010 [P] [US1] Add failing nearest command parser and exit-behavior tests in tests/test_cli.py
+- [X] T011 [P] [US1] Add failing nearest request/response tests in tests/test_client.py
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Implement the `NearestQuery` model and defaults in geosearoute_cli/models.py
-- [ ] T013 [US1] Implement nearest argument parsing and coordinate validation in geosearoute_cli/cli.py and geosearoute_cli/validator.py
-- [ ] T014 [US1] Implement nearest request building and execution in geosearoute_cli/client.py
-- [ ] T015 [US1] Wire nearest command dispatch, pretty JSON output, and exit codes in geosearoute_cli/cli.py and geosearoute_cli/__main__.py
+- [X] T012 [US1] Implement the `NearestQuery` model and defaults in geosearoute_cli/models.py
+- [X] T013 [US1] Implement nearest argument parsing and coordinate validation in geosearoute_cli/cli.py and geosearoute_cli/validator.py
+- [X] T014 [US1] Implement nearest request building and execution in geosearoute_cli/client.py
+- [X] T015 [US1] Wire nearest command dispatch, pretty JSON output, and exit codes in geosearoute_cli/cli.py and geosearoute_cli/__main__.py
 
 **Checkpoint**: User Story 1 should be fully functional and independently testable.
 
@@ -68,15 +68,15 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T016 [P] [US2] Add failing solve command parser and ordered-stop tests in tests/test_cli.py
-- [ ] T017 [P] [US2] Add failing solve request serialization tests in tests/test_client.py
+- [X] T016 [P] [US2] Add failing solve command parser and ordered-stop tests in tests/test_cli.py
+- [X] T017 [P] [US2] Add failing solve request serialization tests in tests/test_client.py
 
 ### Implementation for User Story 2
 
-- [ ] T018 [P] [US2] Implement `StopCoordinate` and `SolveQuery` models in geosearoute_cli/models.py
-- [ ] T019 [US2] Implement solve stop parsing, minimum-stop checks, and speed validation in geosearoute_cli/cli.py and geosearoute_cli/validator.py
-- [ ] T020 [US2] Implement solve request serialization and execution in geosearoute_cli/client.py
-- [ ] T021 [US2] Wire solve command dispatch, formatted output, and exit handling in geosearoute_cli/cli.py and geosearoute_cli/__main__.py
+- [X] T018 [P] [US2] Implement `StopCoordinate` and `SolveQuery` models in geosearoute_cli/models.py
+- [X] T019 [US2] Implement solve stop parsing, minimum-stop checks, and speed validation in geosearoute_cli/cli.py and geosearoute_cli/validator.py
+- [X] T020 [US2] Implement solve request serialization and execution in geosearoute_cli/client.py
+- [X] T021 [US2] Wire solve command dispatch, formatted output, and exit handling in geosearoute_cli/cli.py and geosearoute_cli/__main__.py
 
 **Checkpoint**: User Stories 1 and 2 should both work independently.
 
@@ -92,14 +92,14 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T022 [P] [US3] Add failing configuration and help-output tests in tests/test_cli.py
-- [ ] T023 [P] [US3] Add failing transport, non-JSON error, and remote failure tests in tests/test_client.py
+- [X] T022 [P] [US3] Add failing configuration and help-output tests in tests/test_cli.py
+- [X] T023 [P] [US3] Add failing transport, non-JSON error, and remote failure tests in tests/test_client.py
 
 ### Implementation for User Story 3
 
-- [ ] T024 [US3] Implement early missing-environment and malformed-input failure messaging in geosearoute_cli/cli.py and geosearoute_cli/validator.py
-- [ ] T025 [US3] Implement transport and remote error classification plus stderr rendering in geosearoute_cli/client.py and geosearoute_cli/cli.py
-- [ ] T026 [US3] Finalize top-level help and command-specific help text in geosearoute_cli/cli.py
+- [X] T024 [US3] Implement early missing-environment and malformed-input failure messaging in geosearoute_cli/cli.py and geosearoute_cli/validator.py
+- [X] T025 [US3] Implement transport and remote error classification plus stderr rendering in geosearoute_cli/client.py and geosearoute_cli/cli.py
+- [X] T026 [US3] Finalize top-level help and command-specific help text in geosearoute_cli/cli.py
 
 **Checkpoint**: All user stories should now be independently functional.
 
@@ -109,9 +109,9 @@
 
 **Purpose**: Finish packaging, documentation, and end-to-end validation across all stories.
 
-- [ ] T027 [P] Update exploration documentation and usage examples in README.md
-- [ ] T028 [P] Align package metadata, runtime dependency declaration, and console script details in pyproject.toml and geosearoute_cli/__init__.py
-- [ ] T029 Validate quickstart and packaging workflow in specs/002-geosearoute-cli/quickstart.md and pyproject.toml
+- [X] T027 [P] Update exploration documentation and usage examples in README.md
+- [X] T028 [P] Align package metadata, runtime dependency declaration, and console script details in pyproject.toml and geosearoute_cli/__init__.py
+- [X] T029 Validate quickstart and packaging workflow in specs/002-geosearoute-cli/quickstart.md and pyproject.toml
 
 ---
 
